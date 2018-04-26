@@ -246,7 +246,7 @@ public class LANTests extends TestCase {
 	 */
 	public void testOutput() {
 		Network network = Network.DefaultExample();
-		String generateOutputFName = "useOutput.txt", expectedOutputFName = "expectedOutput.txt";
+		String generateOutputFName = "expectedOutput.txt", expectedOutputFName = "expectedOutput.txt";
 		FileWriter generateOutput;
 		StringBuffer buf = new StringBuffer(500);
 		StringWriter report = new StringWriter(500);
