@@ -307,8 +307,7 @@ public class Network {
 			result = printDocument(currentNode, packet, report);
 		} else {
 			try {
-				report.write(">>> Destinition not found, print job cancelled.\n\n");
-				report.flush();
+				logging(report, ">>> Destinition not found, print job cancelled.\n\n");
 			} catch (IOException exc) {
 				// just ignore
 			}
