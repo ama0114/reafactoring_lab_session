@@ -102,7 +102,7 @@ public class Network {
 	 */
 	public boolean isInitialized() {
 		return (initPtr_ == this);
-	};
+	}
 
 	/**
 	 * Answer whether #receiver contains a workstation with the given name.
@@ -121,7 +121,7 @@ public class Network {
 		} else {
 			return n.type_ == Node.WORKSTATION;
 		}
-	};
+	}
 
 	/**
 	 * Answer whether #receiver is a consistent token ring network. A consistent
@@ -142,11 +142,11 @@ public class Network {
 		if (workstations_.isEmpty()) {
 			return false;
 		}
-		;
+		
 		if (firstNode_ == null) {
 			return false;
 		}
-		;
+		
 		// verify whether all registered workstations are indeed workstations
 		iter = workstations_.elements();
 		while (iter.hasMoreElements()) {
@@ -154,9 +154,9 @@ public class Network {
 			if (currentNode.type_ != Node.WORKSTATION) {
 				return false;
 			}
-			;
+			
 		}
-		;
+		
 		// enumerate the token ring, verifying whether all workstations are registered
 		// also count the number of printers and see whether the ring is circular
 		currentNode = firstNode_;
@@ -165,26 +165,26 @@ public class Network {
 			if (currentNode.type_ == Node.WORKSTATION) {
 				workstationsFound++;
 			}
-			;
+			
 			if (currentNode.type_ == Node.PRINTER) {
 				printersFound++;
 			}
-			;
+			
 			currentNode = currentNode.nextNode_;
 		}
-		;
+		
 		if (currentNode != firstNode_) {
 			return false;
 		}
-		;// not circular
+		// not circular
 		if (printersFound == 0) {
 			return false;
 		}
-		;// does not contain a printer
+		// does not contain a printer
 		if (workstationsFound != workstations_.size()) {
 			return false;
 		}
-		; // not all workstations are registered
+		 // not all workstations are registered
 			// all verifications succeedeed
 		return true;
 	}
@@ -211,7 +211,6 @@ public class Network {
 		} catch (IOException exc) {
 			// just ignore
 		}
-		;
 
 		Node currentNode = firstNode_;
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
@@ -227,7 +226,6 @@ public class Network {
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
 			currentNode = currentNode.nextNode_;
 		} while (!packet.destination_.equals(currentNode.name_));
 
@@ -236,7 +234,6 @@ public class Network {
 		} catch (IOException exc) {
 			// just ignore
 		}
-		;
 		return true;
 	}
 
@@ -277,7 +274,6 @@ public class Network {
 		} catch (IOException exc) {
 			// just ignore
 		}
-		;
 
 		boolean result = false;
 		Node startNode, currentNode;
@@ -290,7 +286,7 @@ public class Network {
 		} catch (IOException exc) {
 			// just ignore
 		}
-		;
+		
 		currentNode = startNode.nextNode_;
 		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
 			try {
@@ -298,10 +294,8 @@ public class Network {
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
 			currentNode = currentNode.nextNode_;
 		}
-		;
 
 		if (packet.destination_.equals(currentNode.name_)) {
 			result = printDocument(currentNode, packet, report);
@@ -311,7 +305,6 @@ public class Network {
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
 			result = false;
 		}
 
@@ -337,20 +330,16 @@ public class Network {
 						if (endPos < 0) {
 							endPos = document.message_.length();
 						}
-						;
 						author = document.message_.substring(startPos + 7, endPos);
 					}
-					;
 					startPos = document.message_.indexOf("title:");
 					if (startPos >= 0) {
 						endPos = document.message_.indexOf(".", startPos + 6);
 						if (endPos < 0) {
 							endPos = document.message_.length();
 						}
-						;
 						title = document.message_.substring(startPos + 6, endPos);
 					}
-					;
 					String end = ">>> Postscript job delivered.\n\n";
 					accountingString(report, author, title, end);
 				} else {
@@ -358,15 +347,12 @@ public class Network {
 					if (document.message_.length() >= 16) {
 						author = document.message_.substring(8, 16);
 					}
-					;
 					String end = ">>> ASCII Print job delivered.\n\n";
 					accountingString(report, author, title, end);
 				}
-				;
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
 			return true;
 		} else {
 			try {
@@ -375,7 +361,6 @@ public class Network {
 			} catch (IOException exc) {
 				// just ignore
 			}
-			;
 			return false;
 		}
 	}
@@ -431,10 +416,8 @@ public class Network {
 				break;
 			default:
 				buf.append("(Unexpected)");
-				;
 				break;
 			}
-			;
 			buf.append(" -> ");
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != firstNode_);
@@ -473,10 +456,8 @@ public class Network {
 				break;
 			default:
 				buf.append("(Unexpected)");
-				;
 				break;
 			}
-			;
 			buf.append(" </LI>");
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != firstNode_);
@@ -514,10 +495,8 @@ public class Network {
 				break;
 			default:
 				buf.append("<unknown></unknown>");
-				;
 				break;
 			}
-			;
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != firstNode_);
 		buf.append("\n</network>");
