@@ -286,9 +286,7 @@ public class Network {
 		startNode = (Node) workstations_.get(workstation);
 
 		try {
-			report.write("\tNode '");
-			report.write(startNode.name_);
-			report.write("' passes packet on.\n");
+			report.write("\tNode '" + startNode.name_ + "' passes packet on.\n");
 			report.flush();
 		} catch (IOException exc) {
 			// just ignore
@@ -297,9 +295,7 @@ public class Network {
 		currentNode = startNode.nextNode_;
 		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
 			try {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' passes packet on.\n");
+				report.write("\tNode '" + currentNode.name_ + "' passes packet on.\n");
 				report.flush();
 			} catch (IOException exc) {
 				// just ignore
@@ -353,26 +349,16 @@ public class Network {
 						title = document.message_.substring(startPos + 6, endPos);
 					}
 					;
-					report.write("\tAccounting -- author = '");
-					report.write(author);
-					report.write("' -- title = '");
-					report.write(title);
-					report.write("'\n");
-					report.write(">>> Postscript job delivered.\n\n");
-					report.flush();
+					String end = ">>> Postscript job delivered.\n\n";
+					accountingString(report, author, title, end);
 				} else {
 					title = "ASCII DOCUMENT";
 					if (document.message_.length() >= 16) {
 						author = document.message_.substring(8, 16);
 					}
 					;
-					report.write("\tAccounting -- author = '");
-					report.write(author);
-					report.write("' -- title = '");
-					report.write(title);
-					report.write("'\n");
-					report.write(">>> ASCII Print job delivered.\n\n");
-					report.flush();
+					String end = ">>> ASCII Print job delivered.\n\n";
+					accountingString(report, author, title, end);
 				}
 				;
 			} catch (IOException exc) {
@@ -390,6 +376,16 @@ public class Network {
 			;
 			return false;
 		}
+	}
+
+	private void accountingString(Writer report, String author, String title, String end) throws IOException {
+		report.write("\tAccounting -- author = '");
+		report.write(author);
+		report.write("' -- title = '");
+		report.write(title);
+		report.write("'\n");
+		report.write(end);
+		report.flush();
 	}
 
 	/**
