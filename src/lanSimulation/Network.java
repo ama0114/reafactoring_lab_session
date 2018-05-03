@@ -286,8 +286,7 @@ public class Network {
 		startNode = (Node) workstations_.get(workstation);
 
 		try {
-			report.write("\tNode '" + startNode.name_ + "' passes packet on.\n");
-			report.flush();
+			logging(report, "\tNode '" + startNode.name_ + "' passes packet on.\n");
 		} catch (IOException exc) {
 			// just ignore
 		}
@@ -295,8 +294,7 @@ public class Network {
 		currentNode = startNode.nextNode_;
 		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
 			try {
-				report.write("\tNode '" + currentNode.name_ + "' passes packet on.\n");
-				report.flush();
+				logging(report, "\tNode '" + currentNode.name_ + "' passes packet on.\n");
 			} catch (IOException exc) {
 				// just ignore
 			}
@@ -319,6 +317,11 @@ public class Network {
 		}
 
 		return result;
+	}
+
+	private void logging(Writer report, String s) throws IOException {
+		report.write(s);
+		report.flush();
 	}
 
 	private boolean printDocument(Node printer, Packet document, Writer report) {
