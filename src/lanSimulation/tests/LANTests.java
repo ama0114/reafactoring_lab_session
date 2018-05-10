@@ -306,7 +306,7 @@ public class LANTests extends TestCase {
 		try {
 			network.requestWorkstationPrintsDocument("UnknownWorkstation", "does not matter", "does not matter", report);			
 		}catch(AssertionError ex) {
-			ex.printStackTrace();
+			System.out.println("Todo va bien");
 		}
 		
 	}
