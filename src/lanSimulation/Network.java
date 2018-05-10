@@ -292,7 +292,7 @@ public class Network {
 		}
 		
 		currentNode = startNode.nextNode_;
-		while ((!atDestination(currentNode, packet)) & (!packet.origin_.equals(currentNode.name_))) {
+		while ((!atDestination(currentNode, packet)) & (!atOrigin(currentNode, packet))) {
 			try {
 				currentNode.logging(report, "\tNode '" + currentNode.name_ + "' passes packet on.\n");
 			} catch (IOException exc) {
@@ -313,6 +313,10 @@ public class Network {
 		}
 
 		return result;
+	}
+
+	private boolean atOrigin(Node currentNode, Packet packet) {
+		return packet.origin_.equals(currentNode.name_);
 	}
 
 	public void accountingString(Writer report, String author, String title, String end) throws IOException {
