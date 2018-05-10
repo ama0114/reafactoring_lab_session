@@ -84,6 +84,8 @@ public class Node {
 	}
 
 	public void logging(Writer report, String s) throws IOException {
+		report.write("\tNode '");
+		report.write(name_);
 		report.write(s);
 		report.flush();
 	}
