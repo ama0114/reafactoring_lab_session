@@ -216,13 +216,11 @@ public class Network {
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
 		do {
 			try {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' accepts broadcase packet.\n");
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' passes packet on.\n");
-				report.flush();
+				String msg;
+				msg="' accepts broadcase packet.\n";
+				send(report, currentNode, msg);
+				msg = "' passes packet on.\n";
+				send(report, currentNode, msg);
 			} catch (IOException exc) {
 				// just ignore
 			}
@@ -235,6 +233,19 @@ public class Network {
 			// just ignore
 		}
 		return true;
+	}
+
+	/**
+	 * @param report
+	 * @param currentNode
+	 * @param msg
+	 * @throws IOException
+	 */
+	private void send(Writer report, Node currentNode, String msg) throws IOException {
+		report.write("\tNode '");
+		report.write(currentNode.name_);
+		report.write(msg);
+		report.flush();
 	}
 
 	private boolean atDestination(Node currentNode, Packet packet) {
@@ -305,7 +316,8 @@ public class Network {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
 			try {
-				currentNode.logging(report, ">>> Destinition not found, print job cancelled.\n\n");
+				report.write(">>> Destinition not found, print job cancelled.\n\n");
+				report.flush();
 			} catch (IOException exc) {
 				// just ignore
 			}
