@@ -218,9 +218,9 @@ public class Network {
 			try {
 				String msg;
 				msg="' accepts broadcase packet.\n";
-				send(report, currentNode, msg);
+				currentNode.logging(report, msg);
 				msg = "' passes packet on.\n";
-				send(report, currentNode, msg);
+				currentNode.logging(report, msg);
 			} catch (IOException exc) {
 				// just ignore
 			}
@@ -233,19 +233,6 @@ public class Network {
 			// just ignore
 		}
 		return true;
-	}
-
-	/**
-	 * @param report
-	 * @param currentNode
-	 * @param msg
-	 * @throws IOException
-	 */
-	private void send(Writer report, Node currentNode, String msg) throws IOException {
-		report.write("\tNode '");
-		report.write(currentNode.name_);
-		report.write(msg);
-		report.flush();
 	}
 
 	private boolean atDestination(Node currentNode, Packet packet) {
@@ -297,7 +284,7 @@ public class Network {
 		startNode = (Node) workstations_.get(workstation);
 
 		try {
-			startNode.logging(report, "\tNode '" + startNode.name_ + "' passes packet on.\n");
+			startNode.logging(report, "' passes packet on.\n");
 		} catch (IOException exc) {
 			// just ignore
 		}
@@ -305,7 +292,7 @@ public class Network {
 		currentNode = startNode.nextNode_;
 		while ((!atDestination(currentNode, packet)) & (!atOrigin(currentNode, packet))) {
 			try {
-				currentNode.logging(report, "\tNode '" + currentNode.name_ + "' passes packet on.\n");
+				currentNode.logging(report, "' passes packet on.\n");
 			} catch (IOException exc) {
 				// just ignore
 			}

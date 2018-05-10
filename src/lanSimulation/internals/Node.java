@@ -83,8 +83,15 @@ public class Node {
 		nextNode_ = nextNode;
 	}
 
-	public void logging(Writer report, String s) throws IOException {
-		report.write(s);
+	/**
+	 * @param report
+	 * @param msg
+	 * @throws IOException
+	 */
+	public void logging(Writer report, String msg) throws IOException {
+		report.write("\tNode '");
+		report.write(name_);
+		report.write(msg);
 		report.flush();
 	}
 
