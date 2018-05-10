@@ -47,7 +47,7 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 	Node 'n1' passes packet on.
 	Node 'Hans' passes packet on.
 	Node 'Andy' passes packet on.
-	Node 'Filip>>> Destinition not found, print job cancelled.
+>>> Destinition not found, print job cancelled.
 
 
 
