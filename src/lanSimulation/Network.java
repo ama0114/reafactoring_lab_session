@@ -227,7 +227,7 @@ public class Network {
 				// just ignore
 			}
 			currentNode = currentNode.nextNode_;
-		} while (!packet.destination_.equals(currentNode.name_));
+		} while (!atDestination(currentNode, packet));
 
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
@@ -235,6 +235,10 @@ public class Network {
 			// just ignore
 		}
 		return true;
+	}
+
+	private boolean atDestination(Node currentNode, Packet packet) {
+		return packet.destination_.equals(currentNode.name_);
 	}
 
 	/**
@@ -288,7 +292,7 @@ public class Network {
 		}
 		
 		currentNode = startNode.nextNode_;
-		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
+		while ((!atDestination(currentNode, packet)) & (!packet.origin_.equals(currentNode.name_))) {
 			try {
 				currentNode.logging(report, "\tNode '" + currentNode.name_ + "' passes packet on.\n");
 			} catch (IOException exc) {
@@ -297,7 +301,7 @@ public class Network {
 			currentNode = currentNode.nextNode_;
 		}
 
-		if (packet.destination_.equals(currentNode.name_)) {
+		if (atDestination(currentNode, packet)) {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
 			try {
