@@ -214,18 +214,7 @@ public class Network {
 
 		Node currentNode = firstNode_;
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
-		do {
-			try {
-				String msg;
-				msg="' accepts broadcase packet.\n";
-				currentNode.logging(report, msg);
-				msg = "' passes packet on.\n";
-				currentNode.logging(report, msg);
-			} catch (IOException exc) {
-				// just ignore
-			}
-			currentNode = currentNode.nextNode_;
-		} while (!atDestination(currentNode, packet));
+		currentNode = send(packet, report, currentNode, true);
 
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
@@ -233,10 +222,6 @@ public class Network {
 			// just ignore
 		}
 		return true;
-	}
-
-	private boolean atDestination(Node currentNode, Packet packet) {
-		return packet.destination_.equals(currentNode.name_);
 	}
 
 	/**
@@ -278,27 +263,23 @@ public class Network {
 		}
 
 		boolean result = false;
-		Node startNode, currentNode;
+		Node currentNode;
 		Packet packet = new Packet(document, workstation, printer);
 
-		startNode = (Node) workstations_.get(workstation);
-
-		try {
-			startNode.logging(report, "' passes packet on.\n");
-		} catch (IOException exc) {
-			// just ignore
-		}
+		currentNode = (Node) workstations_.get(workstation);
 		
-		currentNode = startNode.nextNode_;
-		while ((!atDestination(currentNode, packet)) & (!atOrigin(currentNode, packet))) {
-			try {
-				currentNode.logging(report, "' passes packet on.\n");
-			} catch (IOException exc) {
-				// just ignore
-			}
-			currentNode = currentNode.nextNode_;
-		}
+//		do {
+//			try {
+//				String msg;
+//				msg = "' passes packet on.\n";
+//				currentNode.logging(report, msg);
+//			} catch (IOException exc) {
+//				// just ignore
+//			}
+//			currentNode = currentNode.nextNode_;
+//		}while ((!atDestination(currentNode, packet)) && (!atOrigin(currentNode, packet)));
 
+		currentNode = send(packet, report, currentNode, false);
 		if (atDestination(currentNode, packet)) {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
@@ -313,9 +294,31 @@ public class Network {
 
 		return result;
 	}
+	
+	private Node send(Packet packet, Writer report, Node node, Boolean broadcast) {
+		do {
+			try {
+				String msg;
+				if(broadcast) {
+					msg="' accepts broadcase packet.\n";
+					node.logging(report, msg);
+				}
+				msg = "' passes packet on.\n";
+				node.logging(report, msg);
+			} catch (IOException exc) {
+				// just ignore
+			}
+			node = node.nextNode_;
+		} while ((!atDestination(node, packet)) && (!atOrigin(node, packet)));
+		return node;
+	}
 
 	private boolean atOrigin(Node currentNode, Packet packet) {
 		return packet.origin_.equals(currentNode.name_);
+	}
+
+	private boolean atDestination(Node currentNode, Packet packet) {
+		return packet.destination_.equals(currentNode.name_);
 	}
 
 	public void accountingString(Writer report, String author, String title, String end) throws IOException {
