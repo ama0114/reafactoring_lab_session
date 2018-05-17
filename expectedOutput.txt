@@ -26,9 +26,9 @@ Workstation Filip [Workstation] -> Node n1 [Node] -> Workstation Hans [Workstati
 
 <network>
 	<workstation>Filip</workstation>
-	<node>n1</node>
-	<workstation>Hans</workstation>
-	<printer>Andy</printer>
+	<workstation>Filip</workstation>
+	<workstation>Filip</workstation>
+	<workstation>Filip</workstation>
 </network>
 
 ---------------------------------SCENARIO: Print Success --------------------------

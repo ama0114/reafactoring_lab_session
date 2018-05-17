@@ -65,48 +65,7 @@ public class Packet {
 		String title = "Untitled";
 		int startPos = 0, endPos = 0;
 	
-		if (printer.type_ == Node.PRINTER) {
-			try {
-				if (message_.startsWith("!PS")) {
-					startPos = message_.indexOf("author:");
-					if (startPos >= 0) {
-						endPos = message_.indexOf(".", startPos + 7);
-						if (endPos < 0) {
-							endPos = message_.length();
-						}
-						author = message_.substring(startPos + 7, endPos);
-					}
-					startPos = message_.indexOf("title:");
-					if (startPos >= 0) {
-						endPos = message_.indexOf(".", startPos + 6);
-						if (endPos < 0) {
-							endPos = message_.length();
-						}
-						title = message_.substring(startPos + 6, endPos);
-					}
-					String end = ">>> Postscript job delivered.\n\n";
-					network.accountingString(report, author, title, end);
-				} else {
-					title = "ASCII DOCUMENT";
-					if (message_.length() >= 16) {
-						author = message_.substring(8, 16);
-					}
-					String end = ">>> ASCII Print job delivered.\n\n";
-					network.accountingString(report, author, title, end);
-				}
-			} catch (IOException exc) {
-				// just ignore
-			}
-			return true;
-		} else {
-			try {
-				report.write(">>> Destinition is not a printer, print job cancelled.\n\n");
-				report.flush();
-			} catch (IOException exc) {
-				// just ignore
-			}
-			return false;
-		}
+		return printer.printDocument(network, this, report, author, title);
 	}
 
 }
